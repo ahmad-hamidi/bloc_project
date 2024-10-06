@@ -1,3 +1,6 @@
+import 'package:bloc_project/pages/add_task/views/status_card.dart';
+import 'package:bloc_project/pages/add_task/views/submit_btn.dart';
+import 'package:bloc_project/pages/add_task/views/text_input.dart';
 import 'package:flutter/material.dart';
 
 class AddTaskPage extends StatelessWidget {
@@ -21,83 +24,19 @@ class _AddTaskView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
         child: ListView(
-          children: [
-            const SizedBox(height: 20),
-            TextFormField(),
-            const SizedBox(height: 40),
+          children: const [
+            SizedBox(height: 20),
+            TextInput(),
+            SizedBox(height: 40),
             Row(
               children: [
-                Container(
-                  width: 100,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                  margin: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'todo',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 100,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                  margin: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'pending',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 100,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                  margin: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'done',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
+                StatusCard(title: "Todo", bgColor: Colors.black),
+                StatusCard(title: "Pending", bgColor: Colors.orange),
+                StatusCard(title: "Done", bgColor: Colors.green),
               ],
             ),
-            const SizedBox(height: 40),
-            Align(
-              child: Container(
-                width: 150,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Add new todo',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
+            SizedBox(height: 40),
+            SubmitButton()
           ],
         ),
       ),

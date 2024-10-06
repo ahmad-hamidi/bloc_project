@@ -1,4 +1,6 @@
 import 'package:bloc_project/pages/add_task/views/add_task.dart';
+import 'package:bloc_project/pages/home/views/task_card.dart';
+import 'package:bloc_project/pages/home/views/task_status.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -29,58 +31,13 @@ class _HomeView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 22),
         child: ListView(
           children: [
-            Row(
+            const Row(
               children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        '3 Done',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        '1 Pending',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
+                TaskStatus(title: '3 Done', bgColor: Colors.green),
+                TaskStatus(title: '1 Pending', bgColor: Colors.orange)
               ],
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              margin: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Center(
-                child: Text(
-                  '5 To Do',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+            const TaskStatus(title: '5 Todo', bgColor: Colors.purple),
             const SizedBox(height: 20),
             const Align(
               child: Text(
@@ -92,36 +49,7 @@ class _HomeView extends StatelessWidget {
             Column(
               children: [1, 2, 3, 4, 5]
                   .map(
-                    (e) => Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 12),
-                          const Text('Some task...'),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Colors.black,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    (e) => TaskCard(text: 'Some Task $e')
                   )
                   .toList(),
             ),
