@@ -38,6 +38,7 @@ dependencies:
   task_repository:
     path: task_repository
   get_it: ^8.0.0
+  flutter_bloc: ^8.1.6
 
 dev_dependencies:
   flutter_test:
