@@ -6,6 +6,7 @@ import 'package:bloc_project/pages/home/views/task_status.dart';
 import 'package:bloc_project/pages/home/views/task_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_repository/task_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -41,15 +42,21 @@ class _HomeView extends StatelessWidget {
             Row(
               children: [
                 TaskStatus(title: '3 Done', bgColor: Colors.green, clickListener: () {
-
+                  context.read<TaskBloc>().add(SelectStatus(
+                    status: Status.done
+                  ));
                 }),
                 TaskStatus(title: '1 Pending', bgColor: Colors.orange, clickListener: () {
-
+                  context.read<TaskBloc>().add(SelectStatus(
+                      status: Status.pending
+                  ));
                 })
               ],
             ),
             TaskStatus(title: '5 Todo', bgColor: Colors.purple, clickListener: () {
-
+              context.read<TaskBloc>().add(SelectStatus(
+                  status: Status.todo
+              ));
             }),
             const SizedBox(height: 20),
             const TaskTitle(),
