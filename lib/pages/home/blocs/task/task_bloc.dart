@@ -21,10 +21,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   void _allStatus(GetAllStatus event, Emitter<TaskState> emit) {
-    emit(TaskState(tasks: event.tasks));
+    emit(state.copyWith(taskListModel: event.tasks));
   }
 
   void _selectStatus(SelectStatus event, Emitter<TaskState> emit) {
-    emit(TaskState(tasks: state.tasks, status: event.status));
+    emit(state.copyWith(status: event.status));
   }
 }
