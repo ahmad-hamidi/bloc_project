@@ -13,8 +13,7 @@ class TaskStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: GestureDetector(
+    return GestureDetector(
       onTap: clickListener,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -30,6 +29,6 @@ class TaskStatus extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }

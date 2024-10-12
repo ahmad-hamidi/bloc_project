@@ -43,4 +43,35 @@ class TaskRepository {
     _controller.add(_tasks);
   }
 
+  int countByStatus(Status status, List<TaskModel> tasks) {
+
+    final listDummy = dummyList();
+
+    if (status == Status.all) {
+      //return tasks.length;
+      return listDummy.length;
+    }
+
+    //return tasks.where((model) => model.status == status).toList().length;
+    return listDummy.where((model) => model.status == status).toList().length;
+  }
+
+  List<TaskModel> dummyList() {
+    List<TaskModel> tasks = [];
+    for (int index = 0; index < 100; index++) {
+      Status result;
+      if (index == 4) {
+        result = Status.todo;
+      } else if (index % 2 == 1) {
+        result = Status.pending;
+      } else if (index % 3 == 0) {
+        result = Status.done;
+      } else {
+        result = Status.all;
+      }
+      tasks.add(TaskModel(id: "$index", title: "title $index", status: result));
+    }
+    return tasks;
+  }
+
 }

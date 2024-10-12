@@ -1,3 +1,4 @@
+
 import 'package:bloc_project/locator.dart';
 import 'package:bloc_project/pages/add_task/views/add_task.dart';
 import 'package:bloc_project/pages/home/blocs/task/task_bloc.dart';
@@ -41,36 +42,72 @@ class _HomeView extends StatelessWidget {
           children: [
             Row(
               children: [
-                TaskStatus(title: '3 Done', bgColor: Colors.green, clickListener: () {
-                  context.read<TaskBloc>().add(SelectStatus(
-                    status: Status.done
-                  ));
-                }),
-                TaskStatus(title: '1 Pending', bgColor: Colors.orange, clickListener: () {
-                  context.read<TaskBloc>().add(SelectStatus(
-                      status: Status.pending
-                  ));
-                })
+                Expanded(
+                  child: TaskStatus(
+                    title:
+                        '${lc.get<TaskRepository>().countByStatus(Status.done, [])} Done',
+                    bgColor: Colors.green,
+                    clickListener: () {
+                      context
+                          .read<TaskBloc>()
+                          .add(SelectStatus(status: Status.done));
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TaskStatus(
+                    title:
+                        '${lc.get<TaskRepository>().countByStatus(Status.pending, [])} Pending',
+                    bgColor: Colors.orange,
+                    clickListener: () {
+                      context
+                          .read<TaskBloc>()
+                          .add(SelectStatus(status: Status.pending));
+                    },
+                  ),
+                )
               ],
             ),
-            TaskStatus(title: '5 Todo', bgColor: Colors.purple, clickListener: () {
-              context.read<TaskBloc>().add(SelectStatus(
-                  status: Status.todo
-              ));
-            }),
+            TaskStatus(
+              title:
+                  '${lc.get<TaskRepository>().countByStatus(Status.todo, [])} Todo',
+              bgColor: Colors.purple,
+              clickListener: () {
+                context.read<TaskBloc>().add(SelectStatus(status: Status.todo));
+              },
+            ),
             const SizedBox(height: 20),
             const TaskTitle(),
             const SizedBox(height: 20),
-            Column(
-              children: [1, 2, 3, 4, 5]
-                  .map(
-                    (e) => TaskCard(text: 'Some Task $e')
-                  )
-                  .toList(),
+            BlocBuilder<TaskBloc, TaskState>(
+              builder: (context, state) {
+
+                final tasks = listTaskByStatus(state.status, state.tasks);
+
+                if (tasks.isEmpty) {
+                  return const Center(child: Text("No data"));
+                }
+
+                return Column(
+                  children: tasks
+                      .map((e) => TaskCard(text: '${e.title} ${DateTime.now()}'))
+                      .toList(),
+                );
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  List<TaskModel> listTaskByStatus(Status status, List<TaskModel> tasks) {
+    if (status == Status.all) {
+      //return tasks;
+      return TaskRepository().dummyList();
+    }
+
+    //return tasks.where((model) => model.status == status).toList();
+    return TaskRepository().dummyList().where((model) => model.status == status).toList();
   }
 }

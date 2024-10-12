@@ -17,7 +17,7 @@ class TaskCard extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(width: 12),
-          Text(text),
+          Expanded(child: Text(text)),
           const Spacer(),
           IconButton(
             onPressed: () {},
