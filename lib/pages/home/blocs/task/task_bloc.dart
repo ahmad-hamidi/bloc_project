@@ -12,9 +12,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   TaskBloc(this.taskRepository) : super(TaskState(tasks: [])) {
 
-    /*taskRepository.allTodos.listen((todoList) {
+    taskRepository.allTodos.listen((todoList) {
       add(GetAllStatus(tasks: todoList));
-    });*/
+    });
     
     on<GetAllStatus>(_allStatus);
     on<SelectStatus>(_selectStatus);

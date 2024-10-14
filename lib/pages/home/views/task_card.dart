@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class TaskCard extends StatelessWidget {
   final String text;
+  final Color backgroundColor;
 
-  const TaskCard({required this.text, super.key});
+  const TaskCard({required this.text, required this.backgroundColor, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class TaskCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.7),
+        color: backgroundColor.withOpacity(0.7),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

@@ -1,4 +1,3 @@
-
 import 'package:bloc_project/locator.dart';
 import 'package:bloc_project/pages/add_task/views/add_task.dart';
 import 'package:bloc_project/pages/home/blocs/task/task_bloc.dart';
@@ -45,8 +44,20 @@ class _HomeView extends StatelessWidget {
                 Expanded(
                   child: TaskStatus(
                     title:
-                        '${lc.get<TaskRepository>().countByStatus(Status.done, [])} Done',
-                    bgColor: Colors.green,
+                        '${lc.get<TaskRepository>().countByStatus(Status.all)} All',
+                    bgColor: getBackgroundColor(Status.all),
+                    clickListener: () {
+                      context
+                          .read<TaskBloc>()
+                          .add(SelectStatus(status: Status.all));
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TaskStatus(
+                    title:
+                        '${lc.get<TaskRepository>().countByStatus(Status.done)} Done',
+                    bgColor: getBackgroundColor(Status.done),
                     clickListener: () {
                       context
                           .read<TaskBloc>()
@@ -57,8 +68,8 @@ class _HomeView extends StatelessWidget {
                 Expanded(
                   child: TaskStatus(
                     title:
-                        '${lc.get<TaskRepository>().countByStatus(Status.pending, [])} Pending',
-                    bgColor: Colors.orange,
+                        '${lc.get<TaskRepository>().countByStatus(Status.pending)} Pending',
+                    bgColor: getBackgroundColor(Status.pending),
                     clickListener: () {
                       context
                           .read<TaskBloc>()
@@ -70,8 +81,8 @@ class _HomeView extends StatelessWidget {
             ),
             TaskStatus(
               title:
-                  '${lc.get<TaskRepository>().countByStatus(Status.todo, [])} Todo',
-              bgColor: Colors.purple,
+                  '${lc.get<TaskRepository>().countByStatus(Status.todo)} Todo',
+              bgColor: getBackgroundColor(Status.todo),
               clickListener: () {
                 context.read<TaskBloc>().add(SelectStatus(status: Status.todo));
               },
@@ -81,7 +92,6 @@ class _HomeView extends StatelessWidget {
             const SizedBox(height: 20),
             BlocBuilder<TaskBloc, TaskState>(
               builder: (context, state) {
-
                 final tasks = listTaskByStatus(state.status, state.tasks);
 
                 if (tasks.isEmpty) {
@@ -90,7 +100,10 @@ class _HomeView extends StatelessWidget {
 
                 return Column(
                   children: tasks
-                      .map((e) => TaskCard(text: '${e.title} ${DateTime.now()}'))
+                      .map((e) => TaskCard(
+                            text: '${e.title} ${e.status} ${DateTime.now()}',
+                            backgroundColor: getBackgroundColor(e.status),
+                          ))
                       .toList(),
                 );
               },
@@ -103,11 +116,22 @@ class _HomeView extends StatelessWidget {
 
   List<TaskModel> listTaskByStatus(Status status, List<TaskModel> tasks) {
     if (status == Status.all) {
-      //return tasks;
-      return TaskRepository().dummyList();
+      return tasks;
     }
 
-    //return tasks.where((model) => model.status == status).toList();
-    return TaskRepository().dummyList().where((model) => model.status == status).toList();
+    return tasks.where((model) => model.status == status).toList();
+  }
+
+  Color getBackgroundColor(Status status) {
+    switch (status) {
+      case Status.all:
+        return Colors.brown;
+      case Status.todo:
+        return Colors.purple;
+      case Status.pending:
+        return Colors.orange;
+      case Status.done:
+        return Colors.green;
+    }
   }
 }
