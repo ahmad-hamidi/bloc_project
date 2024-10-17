@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:bloc_project/locator.dart';
 import 'package:bloc_project/pages/add_task/blocs/add_task_bloc.dart';
@@ -15,7 +14,10 @@ class AddTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _AddTaskView();
+    return BlocProvider(
+      create: (context) => AddTaskBloc(lc()),
+      child: const _AddTaskView(),
+    );
   }
 }
 
@@ -24,6 +26,8 @@ class _AddTaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController editText = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Task'),
@@ -33,23 +37,41 @@ class _AddTaskView extends StatelessWidget {
         child: ListView(
           children: [
             const SizedBox(height: 20),
-            const TextInput(),
+            TextInput(editTextController: editText),
             const SizedBox(height: 40),
-            const Row(
-              children: [
-                StatusCard(title: "Todo", bgColor: Colors.black),
-                StatusCard(title: "Pending", bgColor: Colors.orange),
-                StatusCard(title: "Done", bgColor: Colors.green),
-              ],
+            BlocBuilder<AddTaskBloc, AddTaskState>(
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    StatusCard(
+                      title: "Todo",
+                      status: Status.todo,
+                      isSelect: state.taskStatus == Status.todo,
+                    ),
+                    StatusCard(
+                      title: "Pending",
+                      status: Status.pending,
+                      isSelect: state.taskStatus == Status.pending,
+                    ),
+                    StatusCard(
+                      title: "Done",
+                      status: Status.done,
+                      isSelect: state.taskStatus == Status.done,
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 40),
             SubmitButton(
               clickListener: () {
-                List<Status> status = [Status.all, Status.todo, Status.done, Status.pending];
-                AddTaskBloc(lc.get()).add(SubmitEvent(
-                  task: "New Task ${Random().nextInt(999)}",
-                  status: status[Random().nextInt(status.length)],
-                ),);
+                final Status status = context.read<AddTaskBloc>().state.taskStatus;
+                AddTaskBloc(lc.get()).add(
+                  SubmitEvent(
+                    task: editText.text,
+                    status: status,
+                  ),
+                );
               },
             ),
           ],

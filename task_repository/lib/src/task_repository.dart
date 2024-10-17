@@ -1,12 +1,11 @@
-
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:task_repository/task_repository.dart';
 
 class TaskRepository {
-
   final _controller = StreamController<List<TaskModel>>.broadcast();
 
-  List <TaskModel> _tasks = [];
+  List<TaskModel> _tasks = [];
 
   Stream<List<TaskModel>> get allTodos async* {
     yield* _controller.stream;
@@ -43,7 +42,21 @@ class TaskRepository {
     _controller.add(_tasks);
   }
 
-  int countByStatus(Status status) {
-    return _tasks.where((model) => model.status == status).toList().length;
+  int countByStatus(Status status, List<TaskModel> listTask) {
+    return listTask.where((model) => model.status == status).toList().length;
+  }
+
+  Color getBackgroundTaskColor(Status status) {
+    if (status == Status.pending) {
+      return Colors.orange;
+    } else if (status == Status.done) {
+      return Colors.green;
+    } else {
+      return Colors.purple;
+    }
+  }
+
+  Color getBorderSelectedTaskColor(bool isSelect) {
+    return isSelect ? Colors.red : Colors.transparent;
   }
 }

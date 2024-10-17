@@ -44,7 +44,7 @@ class _HomeView extends StatelessWidget {
                 Expanded(
                   child: TaskStatus(
                     title:
-                        '${lc.get<TaskRepository>().countByStatus(Status.all)} All',
+                        '${lc.get<TaskRepository>().countByStatus(Status.all, [])} All',
                     bgColor: getBackgroundColor(Status.all),
                     clickListener: () {
                       context
@@ -56,7 +56,7 @@ class _HomeView extends StatelessWidget {
                 Expanded(
                   child: TaskStatus(
                     title:
-                        '${lc.get<TaskRepository>().countByStatus(Status.done)} Done',
+                        '${lc.get<TaskRepository>().countByStatus(Status.done, [])} Done',
                     bgColor: getBackgroundColor(Status.done),
                     clickListener: () {
                       context
@@ -68,7 +68,7 @@ class _HomeView extends StatelessWidget {
                 Expanded(
                   child: TaskStatus(
                     title:
-                        '${lc.get<TaskRepository>().countByStatus(Status.pending)} Pending',
+                        '${lc.get<TaskRepository>().countByStatus(Status.pending, [])} Pending',
                     bgColor: getBackgroundColor(Status.pending),
                     clickListener: () {
                       context
@@ -81,7 +81,7 @@ class _HomeView extends StatelessWidget {
             ),
             TaskStatus(
               title:
-                  '${lc.get<TaskRepository>().countByStatus(Status.todo)} Todo',
+                  '${lc.get<TaskRepository>().countByStatus(Status.todo, [])} Todo',
               bgColor: getBackgroundColor(Status.todo),
               clickListener: () {
                 context.read<TaskBloc>().add(SelectStatus(status: Status.todo));

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
-  const TextInput({super.key});
+
+  final TextEditingController editTextController;
+
+  const TextInput({required this.editTextController, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField();
+    return TextFormField(
+      controller: editTextController,
+    );
   }
 }
