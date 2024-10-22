@@ -94,7 +94,7 @@ class _HomeView extends StatelessWidget {
                 const SizedBox(height: 20),
                 TaskTitle(status: state.status),
                 const SizedBox(height: 20),
-                _buildList(state)
+                _buildList(state, context)
               ],
             );
           },
@@ -124,7 +124,7 @@ class _HomeView extends StatelessWidget {
     }
   }
 
-  Widget _buildList(TaskState state) {
+  Widget _buildList(TaskState state, BuildContext context) {
     final listTask = listTaskByStatus(state.status, state.tasks);
     return listTask.isEmpty
         ? const Center(child: Text("No data"))
@@ -134,6 +134,11 @@ class _HomeView extends StatelessWidget {
                   (e) => TaskCard(
                     text: '${e.title} ${e.status} ${DateTime.now()}',
                     backgroundColor: getBackgroundColor(e.status),
+                    deleteListener: () {
+                      context.read<TaskBloc>().add(
+                            DeleteTaskEvent(id: e.id),
+                          );
+                    },
                   ),
                 )
                 .toList(),

@@ -30,19 +30,15 @@ class TaskRepository {
     _controller.add(_tasks);
   }
 
-  void deleteTask(TaskModel model) {
-    List<TaskModel> newList = [];
-    for (TaskModel todo in _tasks) {
-      if (todo.id != model.id) {
-        newList.add(model);
-      }
-    }
-
-    _tasks = newList;
+  void deleteTask(String id) {
+    _tasks.removeWhere((model) => model.id == id);
     _controller.add(_tasks);
   }
 
   int countByStatus(Status status, List<TaskModel> listTask) {
+    if (status == Status.all) {
+      return listTask.length;
+    }
     return listTask.where((model) => model.status == status).toList().length;
   }
 
@@ -51,6 +47,8 @@ class TaskRepository {
       return Colors.orange;
     } else if (status == Status.done) {
       return Colors.green;
+    } else if (status == Status.all) {
+      return Colors.blueAccent;
     } else {
       return Colors.purple;
     }

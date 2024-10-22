@@ -18,6 +18,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     
     on<GetAllStatus>(_allStatus);
     on<SelectStatus>(_selectStatus);
+    on<DeleteTaskEvent>(_delete);
   }
 
   void _allStatus(GetAllStatus event, Emitter<TaskState> emit) {
@@ -26,5 +27,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   void _selectStatus(SelectStatus event, Emitter<TaskState> emit) {
     emit(state.copyWith(status: event.status));
+  }
+
+  void _delete(DeleteTaskEvent event, Emitter<TaskState> emit) {
+    taskRepository.deleteTask(event.id);
   }
 }

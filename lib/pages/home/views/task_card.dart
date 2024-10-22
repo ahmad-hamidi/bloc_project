@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class TaskCard extends StatelessWidget {
   final String text;
   final Color backgroundColor;
+  final VoidCallback deleteListener;
 
-  const TaskCard({required this.text, required this.backgroundColor, super.key});
+  const TaskCard({required this.text, required this.backgroundColor, required this.deleteListener, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class TaskCard extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: deleteListener,
             icon: const Icon(
               Icons.delete,
               color: Colors.red,
