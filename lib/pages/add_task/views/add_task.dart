@@ -1,4 +1,3 @@
-
 import 'package:bloc_project/locator.dart';
 import 'package:bloc_project/pages/add_task/blocs/add_task_bloc.dart';
 import 'package:bloc_project/pages/add_task/blocs/add_task_event.dart';
@@ -28,53 +27,71 @@ class _AddTaskView extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController editText = TextEditingController();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Task'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 22),
-        child: ListView(
-          children: [
-            const SizedBox(height: 20),
-            TextInput(editTextController: editText),
-            const SizedBox(height: 40),
-            BlocBuilder<AddTaskBloc, AddTaskState>(
-              builder: (context, state) {
-                return Row(
-                  children: [
-                    StatusCard(
-                      title: "Todo",
-                      status: Status.todo,
-                      isSelect: state.taskStatus == Status.todo,
+    return BlocListener<AddTaskBloc, AddTaskState>(
+      listener: (context, state) {
+        if (state.formStatus == FormStatus.success) {
+          Navigator.pop(context);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Task'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: ListView(
+            children: [
+              const SizedBox(height: 20),
+              TextInput(editTextController: editText),
+              const SizedBox(height: 40),
+              BlocBuilder<AddTaskBloc, AddTaskState>(
+                builder: (context, state) {
+                  return Row(
+                    children: [
+                      StatusCard(
+                        title: "Todo",
+                        status: Status.todo,
+                        isSelect: state.taskStatus == Status.todo,
+                      ),
+                      StatusCard(
+                        title: "Pending",
+                        status: Status.pending,
+                        isSelect: state.taskStatus == Status.pending,
+                      ),
+                      StatusCard(
+                        title: "Done",
+                        status: Status.done,
+                        isSelect: state.taskStatus == Status.done,
+                      ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 40),
+              SubmitButton(
+                clickListener: () {
+                  final Status status = context
+                      .read<AddTaskBloc>()
+                      .state
+                      .taskStatus;
+
+                  context.read<AddTaskBloc>().add(
+                    SubmitEvent(
+                      task: editText.text,
+                      status: status,
+                    )
+                  );
+
+                  /*AddTaskBloc(lc.get()).add(
+                    SubmitEvent(
+                      task: editText.text,
+                      status: status,
                     ),
-                    StatusCard(
-                      title: "Pending",
-                      status: Status.pending,
-                      isSelect: state.taskStatus == Status.pending,
-                    ),
-                    StatusCard(
-                      title: "Done",
-                      status: Status.done,
-                      isSelect: state.taskStatus == Status.done,
-                    ),
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: 40),
-            SubmitButton(
-              clickListener: () {
-                final Status status = context.read<AddTaskBloc>().state.taskStatus;
-                AddTaskBloc(lc.get()).add(
-                  SubmitEvent(
-                    task: editText.text,
-                    status: status,
-                  ),
-                );
-              },
-            ),
-          ],
+                  );*/
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
