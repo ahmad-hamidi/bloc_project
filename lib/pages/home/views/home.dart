@@ -30,7 +30,7 @@ class _HomeView extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (cxt) => const AddTaskPage(),
+            builder: (cxt) => AddTaskPage(),
           ),
         ),
         child: const Icon(Icons.add),
@@ -132,12 +132,22 @@ class _HomeView extends StatelessWidget {
             children: listTask
                 .map(
                   (e) => TaskCard(
-                    text: '${e.title} ${e.status} ${DateTime.now()}',
+                    text: '${e.title}.${e.status} ${DateTime.now()}',
                     backgroundColor: getBackgroundColor(e.status),
                     deleteListener: () {
                       context.read<TaskBloc>().add(
                             DeleteTaskEvent(id: e.id),
                           );
+                    },
+                    editListener: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddTaskPage(
+                            taskModel: e,
+                          ),
+                        ),
+                      );
                     },
                   ),
                 )

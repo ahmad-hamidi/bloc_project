@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class TaskCard extends StatelessWidget {
   final String text;
   final Color backgroundColor;
-  final VoidCallback deleteListener;
+  final VoidCallback deleteListener, editListener;
 
-  const TaskCard({required this.text, required this.backgroundColor, required this.deleteListener, super.key});
+  const TaskCard({required this.text, required this.backgroundColor, required this.deleteListener, required this.editListener, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class TaskCard extends StatelessWidget {
           Expanded(child: Text(text)),
           const Spacer(),
           IconButton(
-            onPressed: () {},
+            onPressed: editListener,
             icon: const Icon(
               Icons.edit,
               color: Colors.black,

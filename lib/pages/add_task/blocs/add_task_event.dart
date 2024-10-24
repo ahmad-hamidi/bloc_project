@@ -23,3 +23,9 @@ final class SubmitEvent extends AddTaskEvent {
 
   SubmitEvent({required this.task, required this.status});
 }
+
+final class EditEvent extends AddTaskEvent {
+  final TaskModel model;
+
+  EditEvent({required this.model});
+}

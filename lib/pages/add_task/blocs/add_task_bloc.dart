@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_project/pages/add_task/blocs/add_task_event.dart';
+import 'package:equatable/equatable.dart';
 import 'package:task_repository/task_repository.dart';
 
 part 'add_task_state.dart';
@@ -14,6 +15,7 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
     on<ChangeTaskEvent>(_changeTask);
     on<ChangeStatusEvent>(_changeStatus);
     on<SubmitEvent>(_submit);
+    on<EditEvent>(_editEvent);
   }
 
   void _changeTask(ChangeTaskEvent event, Emitter<AddTaskState> emit) {
@@ -38,5 +40,13 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
 
     emit(state.copyWith(formStatus: FormStatus.success, isLoading: false));
 
+  }
+
+  void _editEvent(EditEvent event, Emitter<AddTaskState> emit) {
+    emit(state.copyWith(isLoading: true));
+
+    taskRepository.editTask(event.model);
+
+    emit(state.copyWith(formStatus: FormStatus.success, isLoading: false));
   }
 }

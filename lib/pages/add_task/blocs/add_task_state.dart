@@ -2,7 +2,7 @@ part of 'add_task_bloc.dart';
 
 enum FormStatus { initial, success, error }
 
-final class AddTaskState {
+final class AddTaskState extends Equatable {
   final FormStatus formStatus;
   final Status taskStatus;
   final String task;
@@ -27,5 +27,6 @@ final class AddTaskState {
     );
   }
 
-
+  @override
+  List<Object?> get props => [task, taskStatus, formStatus, isLoading];
 }

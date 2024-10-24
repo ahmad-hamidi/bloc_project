@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class SubmitButton extends StatelessWidget {
 
   final VoidCallback clickListener;
+  final String textButton;
 
-  const SubmitButton({super.key, required this.clickListener});
+  const SubmitButton({super.key, required this.clickListener, required this.textButton});
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,10 @@ class SubmitButton extends StatelessWidget {
             color: Colors.blue,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              'Add new todo',
-              style: TextStyle(color: Colors.white),
+              textButton,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),

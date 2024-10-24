@@ -9,24 +9,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_repository/task_repository.dart';
 
 class AddTaskPage extends StatelessWidget {
-  const AddTaskPage({super.key});
+  final TaskModel? taskModel;
+  final TextEditingController editText = TextEditingController();
+
+  AddTaskPage({this.taskModel, super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddTaskBloc(lc()),
-      child: const _AddTaskView(),
+      child: _buildAddTaskView(),
     );
   }
-}
 
-class _AddTaskView extends StatelessWidget {
-  const _AddTaskView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController editText = TextEditingController();
-
+  Widget _buildAddTaskView() {
+    editText.text = taskModel?.title ??"";
     return BlocListener<AddTaskBloc, AddTaskState>(
       listener: (context, state) {
         if (state.formStatus == FormStatus.success) {
@@ -35,7 +32,7 @@ class _AddTaskView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add Task'),
+          title: Text(taskModel != null ? 'Edit Task' : 'Add Task'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -68,32 +65,39 @@ class _AddTaskView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 40),
-              SubmitButton(
-                clickListener: () {
-                  final Status status = context
-                      .read<AddTaskBloc>()
-                      .state
-                      .taskStatus;
-
-                  context.read<AddTaskBloc>().add(
-                    SubmitEvent(
-                      task: editText.text,
-                      status: status,
-                    )
-                  );
-
-                  /*AddTaskBloc(lc.get()).add(
-                    SubmitEvent(
-                      task: editText.text,
-                      status: status,
-                    ),
-                  );*/
-                },
-              ),
+              _buildButtonSubmit()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildButtonSubmit() {
+    return BlocBuilder<AddTaskBloc, AddTaskState>(
+      builder: (context, state) {
+        return SubmitButton(
+          textButton: taskModel != null ? 'Edit Todo' : 'Add New Todo',
+          clickListener: () {
+            if (taskModel != null) {
+              context.read<AddTaskBloc>().add(
+                EditEvent(
+                  model: TaskModel(id : taskModel?.id ?? "", title : editText.text, status : state.taskStatus)
+                ),
+              );
+              return;
+            }
+            final Status status = context.read<AddTaskBloc>().state.taskStatus;
+
+            context.read<AddTaskBloc>().add(
+                  SubmitEvent(
+                    task: editText.text,
+                    status: status,
+                  ),
+                );
+          },
+        );
+      },
     );
   }
 }
