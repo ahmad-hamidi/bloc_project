@@ -79,20 +79,13 @@ class AddTaskPage extends StatelessWidget {
         return SubmitButton(
           textButton: taskModel != null ? 'Edit Todo' : 'Add New Todo',
           clickListener: () {
-            if (taskModel != null) {
-              context.read<AddTaskBloc>().add(
-                EditEvent(
-                  model: TaskModel(id : taskModel?.id ?? "", title : editText.text, status : state.taskStatus)
-                ),
-              );
-              return;
-            }
             final Status status = context.read<AddTaskBloc>().state.taskStatus;
 
             context.read<AddTaskBloc>().add(
                   SubmitEvent(
                     task: editText.text,
                     status: status,
+                    taskModelEdit: taskModel?.copyWith(title: editText.text, status: state.taskStatus),
                   ),
                 );
           },

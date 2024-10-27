@@ -30,13 +30,17 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
 
     emit(state.copyWith(isLoading: true));
 
-    TaskModel taskModel = TaskModel(
-      id : Random().nextInt(10000).toString(),
-      title: event.task,
-      status: event.status
-    );
+    if (event.taskModelEdit != null) {
+      taskRepository.editTask(event.taskModelEdit!);
+    } else {
+      TaskModel taskModel = TaskModel(
+          id : Random().nextInt(10000).toString(),
+          title: event.task,
+          status: event.status
+      );
 
-    taskRepository.addTask(taskModel);
+      taskRepository.addTask(taskModel);
+    }
 
     emit(state.copyWith(formStatus: FormStatus.success, isLoading: false));
 

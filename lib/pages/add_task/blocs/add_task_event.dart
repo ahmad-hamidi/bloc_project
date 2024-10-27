@@ -20,8 +20,9 @@ final class ChangeStatusEvent extends AddTaskEvent {
 final class SubmitEvent extends AddTaskEvent {
   final String task;
   final Status status;
+  final TaskModel? taskModelEdit;
 
-  SubmitEvent({required this.task, required this.status});
+  SubmitEvent({required this.task, required this.status, this.taskModelEdit});
 }
 
 final class EditEvent extends AddTaskEvent {
